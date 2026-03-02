@@ -1,42 +1,54 @@
 
-# dags/dbt_jaffle_shop_dag.py
-from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+from datetime import datetime
 
-DBT_PROJECT_DIR = "/opt/airflow/dags/dbt/jaffle-shop-main"   # path within the synced repo
-DBT_PROFILE_DIR = "/opt/airflow/dags/dbt/jaffle-shop-main"               # where profiles.yml lives
+DBT_PROJECT_DIR = "/opt/airflow/dags/jaffle_shop"   # <-- adjust
+DBT_PROFILE_DIR = "/opt/airflow/dags"               # <-- adjust
 
-default_args = {"owner": "data-eng", "depends_on_past": False}
 with DAG(
     dag_id="dbt_jaffle_shop_fabric",
     start_date=datetime(2024, 1, 1),
-    schedule_interval=None,   # or "@daily"
+    schedule_interval=None,
     catchup=False,
-    default_args=default_args,
-    tags=["dbt","fabric","warehouse"]
+    tags=["dbt","fabric","warehouse"],
 ) as dag:
+
+    diag = BashOperator(
+        task_id="diag_list_paths",
+        bash_command="""
+          set -euxo pipefail
+          pwd
+          ls -la /opt/airflow/dags
+          find /opt/airflow/dags -maxdepth 3 -type d -print
+        """,
+    )
 
     dbt_deps = BashOperator(
         task_id="dbt_deps",
-        bash_command=f"cd {DBT_PROJECT_DIR} && dbt deps --profiles-dir {DBT_PROFILE_DIR}"
-    )
-
-    # Optional: if you use seeds in your project
-    dbt_seed = BashOperator(
-        task_id="dbt_seed",
-        bash_command=f"cd {DBT_PROJECT_DIR} && dbt seed --profiles-dir {DBT_PROFILE_DIR} --target fabric_dev"
+        bash_command=f"""
+          set -euxo pipefail
+          cd {DBT_PROJECT_DIR}
+          dbt deps --profiles-dir {DBT_PROFILE_DIR}
+        """,
     )
 
     dbt_run = BashOperator(
         task_id="dbt_run",
-        bash_command=f"cd {DBT_PROJECT_DIR} && dbt run --profiles-dir {DBT_PROFILE_DIR} --target fabric_dev"
+        bash_command=f"""
+          set -euxo pipefail
+          cd {DBT_PROJECT_DIR}
+          dbt run --profiles-dir {DBT_PROFILE_DIR} --target fabric_dev
+        """,
     )
 
     dbt_test = BashOperator(
         task_id="dbt_test",
-        bash_command=f"cd {DBT_PROJECT_DIR} && dbt test --profiles-dir {DBT_PROFILE_DIR} --target fabric_dev"
+        bash_command=f"""
+          set -euxo pipefail
+          cd {DBT_PROJECT_DIR}
+          dbt test --profiles-dir {DBT_PROFILE_DIR} --target fabric_dev
+        """,
     )
 
-    dbt_deps >> dbt_seed >> dbt_run >> dbt_test
-
+    diag >> dbt_deps >> dbt_run >> dbt_test
