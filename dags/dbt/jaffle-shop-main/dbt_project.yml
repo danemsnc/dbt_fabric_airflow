@@ -1,6 +1,6 @@
 config-version: 2
 
-name: "jaffle_shop"
+name: "jaffle_shop-main"
 version: "3.0.0"
 require-dbt-version: ">=1.5.0"
 
@@ -22,7 +22,7 @@ clean-targets:
   - "dbt_packages"
 
 vars:
-  "dbt_date:time_zone": "America/Los_Angeles"
+  "dbt_date:time_zone": "America/Raleigh"
 
 seeds:
   jaffle_shop:

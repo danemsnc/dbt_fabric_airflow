@@ -4,7 +4,7 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 
-DBT_PROJECT_DIR = "/opt/airflow/dags/dbt/jaffle_shop"   # path within the synced repo
+DBT_PROJECT_DIR = "/opt/airflow/dags/dbt/jaffle_shop-main"   # path within the synced repo
 DBT_PROFILE_DIR = "/opt/airflow/dags/dbt"               # where profiles.yml lives
 
 default_args = {"owner": "data-eng", "depends_on_past": False}
