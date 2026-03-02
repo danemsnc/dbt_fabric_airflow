@@ -1,0 +1,15 @@
+
+fabric:
+  target: dev
+  outputs:
+    dev:
+      type: fabric
+      host: rrx2axhcdcfedmtg375se7h4iy-tlvhwqhbbr5ebel3xv7u7nsm3a.datawarehouse.fabric.microsoft.com          # Example host; use the host from dbt-fabric instructions
+      database: danes_dev_pp_warehouse
+      schema: dbo
+      authentication: azure-cli                     # For local dev; in Fabric Airflow use service principal
+      # For service principal (recommended in Airflow):
+      # authentication: service-principal
+      # tenant_id: "<tenant_id>"
+      # client_id: "<app_client_id>"
+      # client_secret: "{{ env_var('FABRIC_SP_SECRET') }}"
