@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 
 DBT_PROJECT_DIR = "/opt/airflow/dbt_fabric_airflow/dags/dbt/jaffle-shop-main"   # path within the synced repo
-DBT_PROFILE_DIR = "/opt/airflow/dbt_fabric_airflow/dags/dbt"               # where profiles.yml lives
+DBT_PROFILE_DIR = "/opt/airflow/dbt_fabric_airflow/dags/dbt/jaffle-shop-main"               # where profiles.yml lives
 
 default_args = {"owner": "data-eng", "depends_on_past": False}
 with DAG(
