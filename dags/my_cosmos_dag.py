@@ -3,11 +3,11 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from datetime import datetime
 
-DBT_PROJECT_DIR = "/opt/airflow/dags/jaffle_shop"   # <-- adjust
+DBT_PROJECT_DIR = "/opt/airflow/dags/jaffle-shop-main"   # <-- adjust
 DBT_PROFILE_DIR = "/opt/airflow/dags"               # <-- adjust
 
 with DAG(
-    dag_id="dbt_jaffle_shop_fabric",
+    dag_id="dbt_jaffle_shop_fabric_test",
     start_date=datetime(2024, 1, 1),
     schedule_interval=None,
     catchup=False,
